@@ -100,3 +100,18 @@ fig.update_layout(title = str('Value of investment at ' + str(r * 100) + '% inte
         family = "Helvetica",
         size = 12
     ))
+
+
+for i in range(1, t * 12 + 1):
+    month = i
+    invested = P + (M * i)
+    if r == 0.00: 
+        value = Invested
+    else:
+        value = P * ((1 + (r / 12)) ** i) + M * ((((1 + r / 12) ** (i + 1)) 
+                - (1 + (r / 12))) 
+                / (r / 12))
+    results =  results.append({'Month': month, 
+                               'Invested': invested, 
+                               'Value': value}, 
+                               ignore_index = True)
