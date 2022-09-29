@@ -13,7 +13,7 @@ To do that, I retreived most* papers published in MDPI journals (922,544 to be e
 ## Data retreival
 
 First, I got a record of most of MDPI's published papers. Thankfully, MDPI does partake in the "Open Archives Initiative Protocol for Metadata Harvesting" (OAI), which made this task pretty easy, albeit time consuming. 
-Via OAI, I was able to get all MDPI papers published after January 12, 2012. Papers before that date are not included in the analysis and I found it honestly too tedious to try to track them down.
+Via OAI, I was able to get all MDPI papers published after January 12, 2012. Papers before that date are not included in the analysis and I found it honestly too tedious to try to track them down. Retreiving all these papers already too more than two hours(!) as OAI retreival is really slow when there are this many papers...
 I did this step in R, the script can be found in `scripts/get_papers.R`, and the results are contained in `data/papers.csv`.
 
 Second, I needed to obtain the publication history of each article (which, sadly, can't be retreived via OAI. `data/papers.csv` contains the link to each paper, which I used to scrape the publication history from the respective websites using `selenium` and `BeautifulSoup` from `bs4` in Python. 
@@ -21,5 +21,7 @@ The code for this step is contained in `scripts/get_pub_hist.py` and the results
 
 Third, I merged `data/papers.csv` and `data/pubhistory.csv` using `pd.merge` in Python. The result is stored in `data/complete_results.py`. 
 
-## 
+## Analyzing publication speed
+
+I analyzed the speed of peer review and publication by journal. 
 
