@@ -12,7 +12,7 @@ def sim_data(sample_size = 100000,
              beta_0 = 0.5, 
              beta_1 = 0.2, 
              beta_2 = 1.3, 
-             beta_3 = 2,
+             beta_3 = 2,     #change to 0.2 to get a huge change in interaction effect
              beta_4 = 0.8):
              x1 = np.random.random(size = sample_size)
              x2 = np.random.binomial(1, 0.3, size = sample_size)
@@ -85,22 +85,77 @@ ame_df["Variable"] = ame_df.index
 #Logisitcally transformed variable
 width = 0.2
 x = np.arange(4)
-fig, axes = plt.subplots(2, sharex= True)
+fig, axes = plt.subplots(2, sharex= True, figsize=(10,7))
 fig.suptitle('Comparison between LPM coefficients and LR AMEs')
+axes[0].title.set_text('Linearly transformed DV (i.e., incorrect)')
+axes[0].bar(x = x, height=ame_df[ame_df["Model"] == "LPM2"]["X"], width=width, yerr=ame_df[ame_df["Model"] == "LPM2"]['Error'], color = "black")
+axes[0].bar(x = x + 0.2, height=ame_df[ame_df["Model"] == "LR2"]["X"],  width=width, yerr=ame_df[ame_df["Model"] == "LR2"]['Error'], color = "grey")
+axes[0].set_ylabel("Estimates")
+axes[0].legend(["LPM", "LR"])
+axes[1].title.set_text('Logistically transformed DV (i.e., correct)')
 axes[1].bar(x = x, height=ame_df[ame_df["Model"] == "LPM1"]["X"], width=width, yerr=ame_df[ame_df["Model"] == "LPM1"]['Error'], color = "black")
 axes[1].bar(x = x + 0.2, height=ame_df[ame_df["Model"] == "LR1"]["X"],  width=width, yerr=ame_df[ame_df["Model"] == "LR1"]['Error'], color = "grey")
 axes[1].set_xticks(x+0.1, ["x1", "x2", "x3", "x1*x2"])
-axes[1].title.set_text('Logistically transformed DV')
-axes[0].bar(x = x, height=ame_df[ame_df["Model"] == "LPM2"]["X"], width=width, yerr=ame_df[ame_df["Model"] == "LPM2"]['Error'], color = "black")
-axes[0].bar(x = x + 0.2, height=ame_df[ame_df["Model"] == "LR2"]["X"],  width=width, yerr=ame_df[ame_df["Model"] == "LR2"]['Error'], color = "grey")
 axes[1].set_ylabel("Estimates")
-axes[0].set_ylabel("Estimates")
-axes[0].title.set_text('Linearly transformed DV')
-axes[0].legend(["LPM", "LR"])
 fig.tight_layout()
 plt.show()
 
+#With plotly
 
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+
+fig = make_subplots(rows=2, cols=1, subplot_titles=("Linear transformation", "Nonlinear transformation"),
+                    shared_xaxes=True,
+                    vertical_spacing=0.1)
+fig.add_trace(go.Bar(
+       name='LPM', 
+       x = ame_df[ame_df["Model"] == "LPM1"]["Variable"], 
+       y = ame_df[ame_df["Model"] == "LPM1"]["X"],
+       error_y = {"type": "data", 
+                   "symmetric": True,
+                   "color" : 'grey',
+                    "array": 1.96 * ame_df[ame_df["Model"] == "LPM1"]["Error"]},
+       legendgroup = '2',
+       marker_color='#221f1f'),
+       row = 2, col = 1)
+fig.add_trace(go.Bar(
+       name='LR', 
+       x=ame_df[ame_df["Model"] == "LR1"]["Variable"], 
+       y=ame_df[ame_df["Model"] == "LR1"]["X"],
+       error_y = {"type": "data", 
+                   "symmetric": True,
+                   "color" : 'grey',
+                   "array": 1.96 * ame_df[ame_df["Model"] == "LR1"]["Error"]},
+       legendgroup = '2',
+       marker_color='#91bfdb'),
+       row = 2, col = 1)
+fig.add_trace(go.Bar(
+       name='LPM', 
+       x=ame_df[ame_df["Model"] == "LPM2"]["Variable"], 
+       y=ame_df[ame_df["Model"] == "LPM2"]["X"],
+       error_y = {"type": "data", 
+                   "symmetric": True,
+                    "color" : 'grey',
+                    "array": 1.96 * ame_df[ame_df["Model"] == "LPM2"]["Error"]},
+       legendgroup = '1',
+       marker_color='#221f1f'),
+       row = 1, col = 1)
+fig.add_trace(go.Bar(
+       name='LR', 
+       x=ame_df[ame_df["Model"] == "LR2"]["Variable"], 
+       y=ame_df[ame_df["Model"] == "LR2"]["X"],
+       error_y = {"type": "data", 
+                   "symmetric": True,
+                   "color" : 'grey',
+                    "array": 1.96 * ame_df[ame_df["Model"] == "LR2"]["Error"]},
+       legendgroup = '1',
+       marker_color='#91bfdb'),
+       row = 1, col = 1)
+fig.update_layout(title_text="Comparison of LPM coefficients and LR AMEs",
+                  legend_tracegroupgap = 100)
+fig.show()
 
 
 
