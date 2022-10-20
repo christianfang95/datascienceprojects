@@ -32,7 +32,7 @@ This gives us the predicted probabilities of each row being 1 or 2, respectively
 
 $$Pr(Y_{i} = 0) = 1 - Pr(Y_{i} = 1) - Pr(Y_{i} = 2) $$
 
-My intuition told me that calculating $Pr(y_{i} = 0)$ this way would compound the problem of getting nonsensical predicted probabilities from a "binary LPM". If $Pr(Y_{i} = 1)$ and/or $Pr(Y_{i} = 2)$ can take nonsenical values, $Pr(Y_{i} = 0)$ might get "super nonsensical". For example, if $Pr(Y_{i} = 1) = -0.1$ and $Pr(Y_{i} = 1) = 1.2$, then $Pr(Y_{i} = 0) = 1 - (-0.1) + (1.2) = 2.3$. Obviously, such a result cannot be interpreted in terms of a probability, and I assumed that this fundamental flaw of the "MLPM" would make it a poor classifier. 
+My intuition told me that calculating $Pr(y_{i} = 0)$ this way would compound the problem of getting nonsensical predicted probabilities from a "binary LPM". If $Pr(Y_{i} = 1)$ and/or $Pr(Y_{i} = 2)$ can take nonsenical values, $Pr(Y_{i} = 0)$ might get "super nonsensical". For example, if $Pr(Y_{i} = 1) = -0.1$ and $Pr(Y_{i} = 1) = 1.2$, then $Pr(Y_{i} = 0) = 1 - (0.3) - (1.4) = -0.7$. Obviously, such a result cannot be interpreted in terms of a probability, and I assumed that this fundamental flaw of the "MLPM" would make it a poor classifier. 
 
 Little did I know...
 
