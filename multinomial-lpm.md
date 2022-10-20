@@ -66,7 +66,12 @@ X, y = make_classification(n_samples = 1000,
                            n_informative = 3, 
                            n_redundant = 7, 
                            n_classes = classes, 
-                           random_state = 1)```
+                           random_state = 1)
+ ```
+ 
+ ## Implementing the MLPM
+ 
+ Next, we implement our state-of-the-art multinomial linear probability model by passing `LinearRegression()` from `sklearn.linear_model` to the `OneVsRestClassifier`. We, then, calculate the predicted proabilities and get a 
 
 
 def mlpm(features, target):
