@@ -1,6 +1,6 @@
 # Introducing the MLPM
 
-In the second edition of "An Introduction to Statistical Learning", James, Witten, Hastie, and Tibshirani outline why it is a bad idea to use linear regression for a multi-class classification task. In short, the regression coefficients and predicted probabilities are dependent on the ordering of the classes (e.g., ordering the classes as [0, 1, 2] will give you different results compared to ordering the classes as [1, 0, 2]), and linear regression assumes that the difference between the classes is equally big (which makes no sense when you talk about a qualitative target variable). 
+In the second edition of "An Introduction to Statistical Learning", James, Witten, Hastie, and Tibshirani outline [why it is a bad idea to use linear regression for a multi-class classification task](https://hastie.su.domains/ISLR2/ISLRv2_website.pdf). In short, the regression coefficients and predicted probabilities are dependent on the ordering of the classes (e.g., ordering the classes as [0, 1, 2] will give you different results compared to ordering the classes as [1, 0, 2]), and linear regression assumes that the difference between the classes is equally big (which makes no sense when you talk about a qualitative target variable). 
 
 On the other hand, James et al. also mention that using linear regression for a *binary* classification task is generally not all that problematic, though the authors rightly conclude that such an approach is still undesirable for many reasons, for example because you can get nonsensical predicted probabilities such as -0.2 or 1.5. What James et al. don't mention is that using linear regression on a binary dependent variable *is* considered a valid approach by mostly economists and sociologists, who refer to such a model as a "linear probability model" or LPM. Some economists and sociologists even go as far as claiming that the LPM is superior to logistic regression, based on poorly-executed simulation studies, but I digress...
 
@@ -14,7 +14,7 @@ The "multinomial linear probability model" is not actually a proper statistical 
 
 $$Pr(Y_{i} = k) = \alpha + \sum_{j=1}^{k-1} \beta_{k}X_{i}$$
 
-In other words, if we have $k$ classes to predict, we fit $k$ separate binary LPMs. For example, if we have three classes, [0, 1, 2], then we would simply fit two LPMs:
+In other words, if we have $k$ classes to predict, we fit $k$ separate binary LPMs. For example, if we have three classes, [0, 1, 2], then we would simply fit three LPMs:
 
 $$Pr(Y_{i} = 0) = \alpha + \sum \beta_{i}X_{i}$$
 
@@ -28,11 +28,16 @@ This gives us three predicted probabilities:
 - the probability of the observation being in class 2 (as opposed to 0 and 1)
 
 
-But what about the proability of being 0? Well, the only way I came up with was to simply define $Pr(y_{i} = 0)$ as follows:
+My intuition told me that this is a deeply weird approach. As described above, the problem with the LPM is that it can yield predicted probabilities outside the unit interval [0,1]. This is not the case when using a model that explicitly places constraints on the range of the predicted probabilities, such as (multinomial) logistic regression. In case of, for example, multinomial logistic regression, the sum of the predicted probabilities will always be exactly 1. In case of the MLPM, there are no constraints on the range of the predicted probabilities, which may imply that 
 
-$$Pr(Y_{i} = 0) = 1 - Pr(Y_{i} = 1) - Pr(Y_{i} = 2) $$
+$$Pr(Y_{i} = 0) + Pr(Y_{i} = 1) + Pr(Y_{i} = 2) > 1$$
 
-My intuition told me that calculating $Pr(y_{i} = 0)$ this way would certainly compound the problem of getting nonsensical predicted probabilities from a "binary LPM". As is well-documented, it is common for binary LPM predicted probabilities being wildly out of range. So, if $Pr(Y_{i} = 1)$ and/or $Pr(Y_{i} = 2)$ can/will take nonsenical values, $Pr(Y_{i} = 0)$ will get "super nonsensical". For example, if $Pr(Y_{i} = 1) = -0.1$ and $Pr(Y_{i} = 1) = 1.2$, then $Pr(Y_{i} = 0) = 1 - (0.3) - (1.4) = -0.7$. Obviously, such a result cannot be interpreted in terms of a probability, and I assumed that this fundamental flaw of the "MLPM" would make it a poor classifier. 
+or even 
+
+$$Pr(Y_{i} = 0) + Pr(Y_{i} = 1) + Pr(Y_{i} = 2) < 1$$
+
+
+Obviously, this makes absolutely no sense, and I assumed that this fundamental flaw of the "MLPM" would make it a poor classifier. 
 
 Little did I know...
 
@@ -148,6 +153,10 @@ def main(features, target):
  
  main(X, y)
  ```
+ 
+ ![](/images/mlpm.png)
+
+ 
  
  The plot shows us that - perhaps shockingly enough - the MLPM does not perform all that terribly. It is only slightly worse than multinomial logistic regression, though when compared to KNN, both the MLPM and multinomial logistic regression don't perform that well.
  
