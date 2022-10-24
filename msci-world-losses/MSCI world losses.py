@@ -11,7 +11,7 @@ dat = pd.read_csv("chart.csv")
 intervals = list(range(1, 31))
 probability_loss = []
 
-#Loop over all intervals and caculate the losses
+#Loop over all intervals and caculate the lossesa
 for i in intervals:
     #Define the length of the respective interval: number of years (i) times 12 (months)
     length_interval = 12 * i
@@ -50,7 +50,7 @@ for i in intervals:
     prop_loss_abs = num_loss_abs / max_interval
     #Relative losses: when end value is lower than starting value plus 2% inflation per year
     loss_inf = end_vals.apply(lambda x : True
-                if x[0] < (1.02 ** (length_interval / 12) - 1) else False, axis = 1)
+                if x[0] < (1.05 ** (length_interval / 12) - 1) else False, axis = 1)
     # Number of relative losses: filter results
     num_loss_inf= len(loss_inf[loss_inf == True].index)
     #Probability/Proportion of absolute losses
@@ -76,7 +76,7 @@ fig.add_trace(go.Scatter(x=loss_frame["Years"], y=loss_frame["Probability relati
                     'into account'))
 fig.update_layout(title='Probability of Incurring Losses When Investing in MSCI World, per Years Invested',
                    xaxis_title='Years',
-                   yaxis_title='Probability of making a loss',
+                   yaxis_title='Proportion of time series in which a loss was incurred',
                    font=dict(
         family="Helvetica",
         size=12
@@ -88,3 +88,5 @@ fig.update_layout(legend=dict(
     xanchor="right",
     x=1
 ))
+
+fig.write_html('/Users/christianfang/Documents/GitHub/christianfang95.github.io/_includes/example4.html')

@@ -161,9 +161,18 @@ class stock_returns:
                                   xanchor="right",
                                   x=1))
     fig.show()
+    self.fig = fig
+    
+  
+  def save(self):
+    return self.fig.write_html('/Users/christianfang/Documents/GitHub/christianfang95.github.io/_includes/example5.html')
 
 
 #Generate example
-x = stock_returns(data = dat, inflation = 2, years = 30)
+x = stock_returns(data = dat, inflation = 2, years = 15, start_date='2000-01')
 x.loss_proportion()
 x.visualize()
+save = x.save()
+
+x.visualize().write_html("example1.html")
+
