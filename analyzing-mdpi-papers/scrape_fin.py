@@ -32,7 +32,8 @@ def download(link):
     history = soup.find("div", {"class":'pubhistory'})
     history = re.findall('style="display: inline-block">(.*)</span>', str(history))
     history = str(history)
-    with open('/Users/christianfang/GitHub/analyzing-mdpi-papers/data/pubhistory_test.csv', "a", newline='') as f:
+    filename = '/Users/christianfang/GitHub/analyzing-mdpi-papers/data/pubhistory_test.csv'
+    with open(filename, "a", newline='') as f:
      writer = csv.writer(f, delimiter = ',')
      writer.writerow([link, history])
     time.sleep(0.25)
@@ -53,7 +54,25 @@ def main(URLs):
 
 #Scrape papers! Warning: this takes about a day. Proceed in batches if you don't want to let it run for so long
 #e.g., do identifiers[1:1001], then identifiers[1001:2001] etc.
-main(URLs[300200:302200])
+#main(URLs[300300:304300])
+#time.sleep(100)
+#main(URLs[304300:314300])
+#time.sleep(100)
+#main(URLs[314300:324300])
+#time.sleep(100)
+#main(URLs[324300:334300])
+#time.sleep(100)
+main(URLs[334300:335300])
+time.sleep(100)
+main(URLs[344300:354300])
+time.sleep(100)
+main(URLs[354300:364300])
+time.sleep(100)
+main(URLs[364300:404300])
+
+
+
+
 
 
 
@@ -71,3 +90,15 @@ main(URLs[300200:302200])
 
 
 imp = pd.read_csv('/Users/christianfang/GitHub/analyzing-mdpi-papers/data/pubhistory_test.txt', header = None)
+
+
+
+filename = "/Users/christianfang/GitHub/analyzing-mdpi-papers/data/pubhistory_2.csv"
+resp = requests.get(URLs[1])
+soup = BeautifulSoup(resp.content, "html.parser")
+history = soup.find("div", {"class":'pubhistory'})
+history = re.findall('style="display: inline-block">(.*)</span>', str(history))
+history = str(history)
+with open(filename, "a", newline='') as f:
+ writer = csv.writer(f, delimiter = ',')
+ writer.writerow([URLs[1], history])

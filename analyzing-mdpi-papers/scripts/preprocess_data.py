@@ -14,7 +14,7 @@ identifiers.head()
 #Delete oai: prefix and : between mdpi.com and the links
 identifiers = identifiers.map(lambda x: x.lstrip('oai:').rstrip('/'))
 identifiers = identifiers.str.replace(':','')
-identifiers = '"' + 'https://www.' + identifiers + '"'
+identifiers = 'https://www.' + identifiers
 
 #Write identifiers as csv
 identifiers = pd.DataFrame(identifiers)

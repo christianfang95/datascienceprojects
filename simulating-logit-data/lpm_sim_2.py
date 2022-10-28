@@ -13,7 +13,7 @@ def sim_data(sample_size = 100000,
              beta_1 = 0.2, 
              beta_2 = 1.3, 
              beta_3 = 2,     #change to 0.2 to get a huge change in interaction effect
-             beta_4 = 0.8):
+             beta_4 = 0.5):
              x1 = np.random.random(size = sample_size)
              x2 = np.random.binomial(1, 0.3, size = sample_size)
              x3 = np.random.poisson(lam = 2.5, size = sample_size)
@@ -156,8 +156,3 @@ fig.add_trace(go.Bar(
 fig.update_layout(title_text="Comparison of LPM coefficients and LR AMEs",
                   legend_tracegroupgap = 100)
 fig.show()
-
-
-
-
-

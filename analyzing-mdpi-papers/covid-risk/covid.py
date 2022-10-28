@@ -1,11 +1,11 @@
 import numpy as np
 
 #population size
-population = 8000000
+population = 9033999
 #Number of carriers
-carriers = 500
+carriers = (113*7)*10
 #Room size
-room = 1000
+room = 100
 
 #Probability of having at least one positive person
 prob = 1 - np.power((1- (carriers / population)), room)
