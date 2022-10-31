@@ -111,7 +111,7 @@ names(pred_lpm) = c("pred","x1", "x2")
 
 p5 <- ggplot(pred_logit, aes(x=x1, y=pred, color = x2)) + 
   geom_point() +
-  ggtitle("Logistic regression") +
+  ggtitle("Logistic Regression") +
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position="top")+ 
   ylab("Predicted probability")
@@ -124,5 +124,5 @@ p6 <- ggplot(pred_lpm, aes(x=x1, y=pred, color = x2)) +
   ylab("Predicted probability")
 
 
-grid.arrange(p5, p6, ncol =2,top = textGrob("Continous * Continous Interaction Effect", 
+grid.arrange(p5, p6, ncol =2,top = textGrob("Continuous * Continuous Interaction Effect", 
                                             gp=gpar(fontsize=15)))
