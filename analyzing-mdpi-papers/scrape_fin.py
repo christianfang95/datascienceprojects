@@ -62,13 +62,13 @@ def main(URLs):
 #time.sleep(100)
 #main(URLs[324300:334300])
 #time.sleep(100)
-main(URLs[334300:335300])
+#main(URLs[334300:335300])
 time.sleep(100)
-main(URLs[344300:354300])
+#main(URLs[335300:345300])
 time.sleep(100)
-main(URLs[354300:364300])
+#main(URLs[370000:375000])
 time.sleep(100)
-main(URLs[364300:404300])
+main(URLs[375000:400000])
 
 
 
