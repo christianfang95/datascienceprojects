@@ -9,13 +9,6 @@ prob2logit <- function(x){
 }
 
 
-logit2prob <- function(x){
-  prob = exp(x)/(1+exp(x))
-  return(prob)
-}
-
-pr <- logit2prob(-2)
-
 intercept <- prob2logit(0.5)
 
 #Simulate dummy x continuous
