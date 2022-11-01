@@ -12,7 +12,7 @@ prob2logit <- function(x){
 intercept <- prob2logit(0.5)
 
 #Simulate dummy x continuous
-sim_dummy_cont = function(sample_size = 3000, beta_0 = intercept, beta_1 = -1.5, beta_2= 0.8, beta_3 = -0.8) {
+sim_dummy_cont = function(sample_size = 3000, beta_0 = intercept, beta_1 = -1.5, beta_2= 0.8, beta_3 = -0.4) {
   x1 = rnorm(n = sample_size)
   x2 = rbinom(n = sample_size, size = 1, prob = 0.7)
   eta = beta_0 + beta_1 * x1+ beta_2 * x2 + beta_3 * (x2 * x1)
@@ -21,7 +21,7 @@ sim_dummy_cont = function(sample_size = 3000, beta_0 = intercept, beta_1 = -1.5,
   data.frame(y, x1, x2)}
 
 #Simulate dummy x dummy 
-sim_dummy_dummy = function(sample_size = 3000, beta_0 = intercept, beta_1 = +1.5, beta_2= +0.8, beta_3 = -0.5) {
+sim_dummy_dummy = function(sample_size = 3000, beta_0 = intercept, beta_1 = +1.5, beta_2= +0.8, beta_3 = -0.6) {
   x1 = rbinom(n = sample_size, size = 1, prob = 0.3)
   x2 = rbinom(n = sample_size, size = 1, prob = 0.7)
   eta = beta_0 + beta_1 * x1+ beta_2 * x2 + beta_3 * (x2 * x1)
@@ -49,7 +49,7 @@ names(pred_logit) = c("pred","x1", "x2")
 
 p1 <- ggplot(pred_logit, aes(x=x1, y=pred, color=x2)) + 
       geom_line() +
-      scale_color_manual(values=c('red','blue'), labels = c("rural", "urban")) +
+      scale_color_manual(values=c('#74a9cf','#034e7b'), labels = c("rural", "urban")) +
       ggtitle("Logistic regression") +
       theme(plot.title = element_text(hjust = 0.5))+
       theme(legend.position="top")+ 
@@ -64,12 +64,12 @@ names(pred_lpm) = c("pred","x1", "x2")
 
 p2 <- ggplot(pred_lpm, aes(x=x1, y=pred, color=x2)) + 
       geom_line() +
-      scale_color_manual(values=c('red','blue'), labels = c("rural", "urban")) +
+      scale_color_manual(values=c('#74a9cf','#034e7b'), labels = c("rural", "urban")) +
       ggtitle("LPM") +
       theme(plot.title = element_text(hjust = 0.5)) +
       theme(legend.position="top")+ 
       ylab("Predicted probability of renting") +
-      xlab("Wealth")
+      xlab("Wealth") 
 
 grid.arrange(p1, p2, ncol =2, top = textGrob("Dummy * Continuous Interaction Effect", 
                                              gp=gpar(fontsize=15)))
@@ -86,7 +86,7 @@ names(pred_lpm) = c("pred","x1", "x2")
 
 p3 <- ggplot(pred_logit, aes(x=x1, y=pred, color=x2)) + 
   geom_point() +
-  scale_color_manual(values=c('red','blue'), labels = c("rural", "urban")) +
+  scale_color_manual(values=c('#74a9cf','#034e7b'), labels = c("rural", "urban")) +
   ggtitle("Logistic Regression")+
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position="top")+ 
@@ -98,7 +98,7 @@ p3 <- ggplot(pred_logit, aes(x=x1, y=pred, color=x2)) +
 
 p4 <- ggplot(pred_lpm, aes(x=x1, y=pred, color=x2)) + 
   geom_point() +
-  scale_color_manual(values=c('red','blue'), labels = c("rural", "urban")) +
+  scale_color_manual(values=c('#74a9cf','#034e7b'), labels = c("rural", "urban")) +
   ggtitle("LPM")+
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position="top")+ 
