@@ -68,7 +68,8 @@ time.sleep(100)
 time.sleep(100)
 #main(URLs[370000:375000])
 time.sleep(100)
-main(URLs[375000:400000])
+#main(URLs[400000:405000])
+main(URLs[405000:410000])
 
 
 
