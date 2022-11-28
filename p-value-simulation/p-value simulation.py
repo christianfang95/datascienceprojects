@@ -17,7 +17,7 @@ def sim_data(sample_size = 1000, beta_0 = 1, beta_1 = 0.00):
   return pd.DataFrame(d)
 
 #Perform simulation
-def getpvalue(repetitions = 1000, sample_size = 100):
+def getpvalue(repetitions = 2000, sample_size = 100):
   """ This function runs 1000 linear regressions with different values
   for the slope of x1, and appends the results to a list
   """
@@ -58,15 +58,18 @@ def flatten_list(_2d_list):
             flat_list.append(element)
     return flat_list
 
+size = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+2000, 3000, 4000, 5000, 6000, 7000, 8000, 10000, 20000, 40000, 60000, 80000, 100000]
+
 
 def main():
-  size = np.arange(100, 10000, 100)
   result = []
   count = 0
   for sample in size:
     count += 1
-    print("Running sample " +str(count) + " out of " + str(len(size)))
     result.append(getpvalue(sample_size = sample))
+    print("Ran sample " +str(count) + " out of " + str(len(size)) + ". " +
+     str((100*(count/len(size)))) + " % done.")
   flat_list = flatten_list(result)
   df = pd.DataFrame(flat_list).rename(columns = {0: "ES b", 1: "p-value x1", 2: 'sample size'})
   return df
@@ -76,16 +79,13 @@ def main():
 df = main()
 
 #Plot p-values
-
-
-colors = ["#fc8d59", "#ef6548", "#d7301f", "#b30000",  "#7f0000"]
 fig, axes = plt.subplots(2, 3, figsize = (15, 7.5))
 fig.suptitle('Distribution of p-values of Linear Regression Coefficients of Different Magnitudes, N=1000', 
              fontsize = 18, 
              y = 1.05)
-fig.subplots_adjust(top = 0.7)
+fig.subplots_adjust(top = 0.5)
 sns.color_palette("rocket")
-fig.tight_layout(pad=3.0)
+fig.tight_layout(pad=1.0)
 axes[0, 0].set_title('$b_1$ = 0.00', fontsize = 15, pad = 5)
 axes[0, 1].set_title('$b_1$ = 0.01', fontsize = 15, pad = 5)
 axes[0, 2].set_title('$b_1$ = 0.02', fontsize = 15, pad = 5)
@@ -96,30 +96,14 @@ axes[1, 1].set_title('$b_1$ = 0.04', fontsize = 15, pad = 5)
 sns.lineplot(ax = axes[0, 0], data = df, x=df['sample size'], y = df[df["ES b"] == 0.0]['p-value x1'], ci=None)
 sns.lineplot(ax = axes[0, 1], data = df, x=df['sample size'], y = df[df["ES b"] == 0.001]['p-value x1'])
 sns.lineplot(ax = axes[0, 2], data = df, x=df['sample size'], y = df[df["ES b"] == 0.01]['p-value x1'])
-sns.lineplot(ax = axes[1, 0], data = df, x=df['sample size'], y = df[df["ES b"] == 0.05]['p-value x1'])
-sns.lineplot(ax = axes[1, 1], data = df, x=df['sample size'], y = df[df["ES b"] == 0.1]['p-value x1'])
+sns.lineplot(ax = axes[1, 0], data = df, x=df[df['sample size'] < 20000]['sample size'], y = df[df["ES b"] == 0.05]['p-value x1'])
+sns.lineplot(ax = axes[1, 1], data = df, x=df[df['sample size'] < 20000]['sample size'], y = df[df["ES b"] == 0.1]['p-value x1'])
 axes[0, 0].set_ylim(0,1)
 axes[0, 1].set_ylim(0,1)
-
 axes[0, 2].set_ylim(0,1)
-
 axes[1, 0].set_ylim(0,1)
 axes[1, 1].set_ylim(0,1)
-
-
-#sns.histplot(ax = axes[0, 1], data = df, x = df[df["ES b"] == 0.001]['p-value x1'], hue='sample size', bins = 50, palette = colors)
-
-#sns.histplot(ax = axes[0, 2], data = df, x = df[df["ES b"] == 0.01]['p-value x1'], hue='sample size', bins = 50, palette = colors)
-
-#sns.histplot(ax = axes[1, 0], data = df, x = df[df["ES b"] == 0.02]['p-value x1'], hue='sample size', bins = 50,  palette = colors)
-
-#sns.histplot(ax = axes[1, 1], data = df, x = df[df['ES b'] == 0.05]['p-value x1'], hue='sample size', bins = 50,  palette = colors)
-
-#axes[0, 0].axvspan(0, 0.04999999999, facecolor='red', alpha = 0.3)
-#axes[0, 1].axvspan(0, 0.04999999999, facecolor='red', alpha = 0.3)
-#axes[0, 2].axvspan(0, 0.04999999999, facecolor='red', alpha = 0.3)
-#axes[1, 0].axvspan(0, 0.04999999999, facecolor='red', alpha = 0.3)
-#axes[1, 1].axvspan(0, 0.04999999999, facecolor='red', alpha = 0.3)
 axes[1, 2].set_visible(False)
 axes[1, 0].set_position([0.24,0.125,0.228,0.343])
 axes[1, 1].set_position([0.55,0.125,0.228,0.343])
+fig.show()

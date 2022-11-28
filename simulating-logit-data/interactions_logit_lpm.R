@@ -102,7 +102,7 @@ p4 <- ggplot(pred_lpm, aes(x=x1, y=pred, color=x2)) +
   ggtitle("LPM")+
   theme(plot.title = element_text(hjust = 0.5)) +
   theme(legend.position="top")+ 
-  ylab("PPredicted probability of renting") +
+  ylab("Predicted probability of renting") +
   xlab("Unemployed")+
   scale_x_discrete(limits = c(0,1), labels=c("0" = "0: Working", "1" = "1: Unemployed")) +
   ylim(0,1)
