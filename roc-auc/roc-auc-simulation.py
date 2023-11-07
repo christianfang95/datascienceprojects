@@ -56,7 +56,7 @@ for i in thresholds:
     TP=0
     thresh = round(i,2) #Limiting floats to two decimal points, or threshold 0.6 will be 0.6000000000000001 which gives FP=0
     for j in range(len(predicted_labels_logit)):
-        if (predicted_labels_logit[j] >= i):
+        if (predicted_labels_logit[j] >= thresh):
             if actual_labels[j] == 1:
                 TP = TP + 1
             if actual_labels[j] == 0:
